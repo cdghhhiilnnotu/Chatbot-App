@@ -31,6 +31,7 @@ def get_response(user_query, chat_history):
         
     context = f"Với các thông tin sau (nếu có):\n{rag_context}\nHãy trả lời câu hỏi:\n"
     st.text("da co context")
+    st.text(f"{chat_history}")
     respones = chain.invoke({"question": context + user_query, "history": chat_history})
     st.text(respones)
     
