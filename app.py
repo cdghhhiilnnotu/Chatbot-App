@@ -18,22 +18,15 @@ def get_response(user_query, chat_history):
     {question}
     Trả lời:
     """
-    st.text("da nhan cau hoi")
 
     llm = OllamaLLM(model='llama3.2')
-    st.text("da co model")
+    
     prompt = PromptTemplate.from_template(template=template)
-    st.text("da co template")
         
     chain = prompt | llm | StrOutputParser()
-    st.text("da co chain")
     rag_context = ''
         
     context = f"Với các thông tin sau (nếu có):\n{rag_context}\nHãy trả lời câu hỏi:\n"
-    st.text("da co context")
-    st.text(f"{chat_history}")
-    respones = chain.invoke({"question": context + user_query, "history": chat_history})
-    st.text(respones)
     
     return chain.stream({"question": context + user_query, "history": chat_history})
 
@@ -55,16 +48,12 @@ for message in st.session_state.chat_history:
 
 # user input
 user_query = st.chat_input("Type your message here...")
-st.text("da hoi")
 if user_query is not None and user_query != "":
     st.session_state.chat_history.append(HumanMessage(content=user_query))
 
     with st.chat_message("Human"):
         st.markdown(user_query)
-    st.text("da in cau hoi")
     with st.chat_message("AI"):
         response = st.write_stream(get_response(user_query, st.session_state.chat_history))
-    st.text("da dua ra cau tra loi")
 
     st.session_state.chat_history.append(AIMessage(content=response))
-    st.text("da luu cau tra loi")
